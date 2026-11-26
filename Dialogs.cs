@@ -19,7 +19,7 @@ namespace SwitchEnv
         public static Button Button(string label, bool primary)
         { return new Button { Content = label, Style = (Style)Application.Current.FindResource(primary ? "PrimaryButton" : "ButtonBaseStyle"), MinWidth = 86 }; }
         public static Window Dialog(Window owner, string title, double width, double height)
-        { return new Window { Owner = owner, Title = title + " — SwitchEnv", Width = width, Height = height, MinWidth = width, MinHeight = height, WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInTaskbar = false, ResizeMode = ResizeMode.NoResize }; }
+        { return new Window { Owner = owner, Title = title + " — SwitchEnvVar", Width = width, Height = height, MinWidth = width, MinHeight = height, WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInTaskbar = false, ResizeMode = ResizeMode.NoResize }; }
         public static bool Secret(string name, string value)
         { return Regex.IsMatch(name ?? "", "KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL|PASSWD", RegexOptions.IgnoreCase) || Regex.IsMatch(value ?? "", "^(sk-|ghp_|github_pat_|xox[baprs]-|glpat-)"); }
         public static string ValueText(Variable v, bool reveal)
@@ -60,7 +60,7 @@ namespace SwitchEnv
 
     public static class Dialogs
     {
-        public static void Error(Window owner, Exception ex) { MessageBox.Show(owner, ex.Message, "SwitchEnv", MessageBoxButton.OK, MessageBoxImage.Warning); }
+        public static void Error(Window owner, Exception ex) { MessageBox.Show(owner, ex.Message, "SwitchEnvVar", MessageBoxButton.OK, MessageBoxImage.Warning); }
         public static bool Confirm(Window owner, string title, string text, string affirmative)
         {
             var w = Ui.Dialog(owner, title, 480, 260); w.SizeToContent = SizeToContent.Height; w.MaxHeight = 700; var panel = new StackPanel { Margin = new Thickness(25) };
@@ -209,7 +209,7 @@ namespace SwitchEnv
 
         static TextBox AddDescriptionField(Panel form, string initial, Thickness margin)
         {
-            var label = Ui.Text("描述（选填，仅 SwitchEnv 内可见）", 12, "#77877B");
+            var label = Ui.Text("描述（选填，仅 SwitchEnvVar 内可见）", 12, "#77877B");
             label.Margin = margin;
             form.Children.Add(label);
             var input = new TextBox { Name = "VariableDescription", Text = initial ?? "", Height = 64, Margin = new Thickness(0, 7, 0, 0),

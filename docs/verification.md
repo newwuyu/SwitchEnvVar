@@ -1,4 +1,4 @@
-# SwitchEnv 验证记录
+# SwitchEnvVar 验证记录
 
 ## 0.2.2 变量描述
 

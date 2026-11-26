@@ -344,7 +344,7 @@ namespace SwitchEnv
         }
         void Import()
         {
-            var dialog = new OpenFileDialog { Title = "导入 SwitchEnv 配置组", Filter = "SwitchEnv JSON|*.json" }; if (dialog.ShowDialog(Window) != true) return;
+            var dialog = new OpenFileDialog { Title = "导入 SwitchEnvVar 配置组", Filter = "SwitchEnvVar JSON|*.json" }; if (dialog.ShowDialog(Window) != true) return;
             var imported = Json.Read<State>(dialog.FileName); FileStore.Check(imported);
             foreach (var p in imported.Profiles) { var keys = new HashSet<string>(); foreach (var e in p.Entries) { Planner.Validate(e); if (!keys.Add(e.Key)) throw new Exception(p.Name + " 包含重复变量：" + e.Name); } }
             if (imported.Profiles.Count > 200) throw new Exception("单次最多导入 200 个配置组。");
@@ -353,7 +353,7 @@ namespace SwitchEnv
         void Export()
         {
             if (State.Profiles.Any(p => p.Entries.Any(e => Ui.Secret(e.Name, e.Value))) && !Dialogs.Confirm(Window, "导出包含敏感值", "配置组包含密钥或密码。导出的 JSON 会保存完整值，请妥善保管。", "继续导出")) return;
-            var dialog = new SaveFileDialog { Title = "导出全部配置组", Filter = "SwitchEnv JSON|*.json", FileName = "switchenv-profiles.json" }; if (dialog.ShowDialog(Window) != true) return;
+            var dialog = new SaveFileDialog { Title = "导出全部配置组", Filter = "SwitchEnvVar JSON|*.json", FileName = "switchenv-profiles.json" }; if (dialog.ShowDialog(Window) != true) return;
             var exported = new State { Profiles = Json.Copy(State.Profiles) }; Json.Write(dialog.FileName, exported); Status("配置组已导出（不含本机备份与历史）");
         }
         void Elevate()
@@ -395,11 +395,11 @@ namespace SwitchEnv
         }
         void Help()
         {
-            MessageBox.Show(Window, "1. 左侧新建配置组，右侧添加并编辑变量。\n2. 点击启用，检查预览后应用；可同时启用多个配置组，后启用的组优先。\n3. PATH 可选择前置或追加，并逐项调整。\n4. 停用某组会保留其他组；全部停用后恢复原值，外部修改会提示冲突。\n5. 正常打开时默认申请管理员权限，请使用当前账号确认 Windows 权限提示。演示模式不需要提权。\n6. 关闭窗口会进入托盘。退出程序后仍保留已启用的环境。\n7. 数据保存在程序旁的 data 文件夹，可随程序一起迁移；备份中可能含敏感值。\n8. 新建终端会读取最新环境，已经打开的应用可能需要重启。\n9. 左下角可开启“开机自启”，当前账号登录后以管理员权限启动到托盘。移动程序后请重新开启。\n10. 勾选变量或用 Ctrl/Shift 多选，再点击“批量移动”；表头或 Ctrl+A 可全选当前列表。支持用户/系统、本机/配置组及配置组之间移动，统一预览、整体恢复。\n11. 本机环境可按“全部方式 / 本机值 / 配置组管理”或某个已启用组筛选，与范围和搜索组合；全选只选当前结果。\n\n快捷键：Ctrl+N 新建配置组，F5 刷新。", "SwitchEnv 使用帮助", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(Window, "1. 左侧新建配置组，右侧添加并编辑变量。\n2. 点击启用，检查预览后应用；可同时启用多个配置组，后启用的组优先。\n3. PATH 可选择前置或追加，并逐项调整。\n4. 停用某组会保留其他组；全部停用后恢复原值，外部修改会提示冲突。\n5. 正常打开时默认申请管理员权限，请使用当前账号确认 Windows 权限提示。演示模式不需要提权。\n6. 关闭窗口会进入托盘。退出程序后仍保留已启用的环境。\n7. 数据保存在程序旁的 data 文件夹，可随程序一起迁移；备份中可能含敏感值。\n8. 新建终端会读取最新环境，已经打开的应用可能需要重启。\n9. 左下角可开启“开机自启”，当前账号登录后以管理员权限启动到托盘。移动程序后请重新开启。\n10. 勾选变量或用 Ctrl/Shift 多选，再点击“批量移动”；表头或 Ctrl+A 可全选当前列表。支持用户/系统、本机/配置组及配置组之间移动，统一预览、整体恢复。\n11. 本机环境可按“全部方式 / 本机值 / 配置组管理”或某个已启用组筛选，与范围和搜索组合；全选只选当前结果。\n\n快捷键：Ctrl+N 新建配置组，F5 刷新。", "SwitchEnvVar 使用帮助", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         void CreateTray()
         {
-            tray = new Forms.NotifyIcon { Text = "SwitchEnv · 环境变量管理" };
+            tray = new Forms.NotifyIcon { Text = "SwitchEnvVar · 环境变量管理" };
             using (var resource = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("SwitchEnv.app.ico")) tray.Icon = new System.Drawing.Icon(resource);
             tray.DoubleClick += delegate { Window.Dispatcher.BeginInvoke(new Action(ShowWindow)); }; RenderTray();
             tray.Visible = true;
@@ -408,7 +408,7 @@ namespace SwitchEnv
         {
             if (tray == null) return; var menu = new Forms.ContextMenuStrip();
             Action<string, Action> add = (label, action) => { var item = menu.Items.Add(label); item.Click += delegate { Window.Dispatcher.BeginInvoke(new Action(() => { ShowWindow(); Safe(action); })); }; };
-            add("打开 SwitchEnv", ShowWindow); menu.Items.Add(new Forms.ToolStripSeparator());
+            add("打开 SwitchEnvVar", ShowWindow); menu.Items.Add(new Forms.ToolStripSeparator());
             foreach (var p in State.Profiles) { var current = p; add((GroupState.Enabled(State, p.Id) ? "✓  " : "    ") + p.Name, () => SetGroup(current, !GroupState.Enabled(State, current.Id))); }
             if (State.ActiveGroups.Count > 0) add("停用全部配置组", StopAll);
             menu.Items.Add(new Forms.ToolStripSeparator()); add("退出（保留当前环境）", Quit);

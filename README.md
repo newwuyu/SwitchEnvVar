@@ -1,10 +1,10 @@
-# SwitchEnv
+# SwitchEnvVar · Windows 环境变量管理与切换
 
-SwitchEnv 是一个使用 C# 和 WPF 编写的 Windows 环境变量管理器。把开发工具链、代理和项目变量分别保存为配置组，需要时可以同时启用多个组。
+SwitchEnvVar 是一个使用 C# 和 WPF 编写的 Windows 环境变量管理器。把开发工具链、代理和项目变量分别保存为配置组，需要时可以同时启用多个组。
 
-SwitchEnv is a Windows environment variable manager with composable profiles, a PATH editor, and previews before changes are applied.
+SwitchEnvVar manages and switches Windows environment variables with composable profiles, a PATH editor, and change previews.
 
-![SwitchEnv 演示界面，显示本机环境和变量描述](docs/demo.png)
+![SwitchEnvVar 演示界面，显示本机环境和变量描述](docs/demo.png)
 
 ## 功能
 
@@ -16,7 +16,9 @@ SwitchEnv is a Windows environment variable manager with composable profiles, a 
 
 ## 快速体验
 
-需要 Windows 10 或 11 和 .NET Framework 4.8 或更新版本。解压便携包后，双击「演示模式.cmd」可用模拟变量体验界面。正常打开 `SwitchEnv.exe` 会请求当前账号的管理员权限。
+从 [GitHub Releases](https://github.com/newwuyu/SwitchEnvVar/releases) 下载便携包。需要 Windows 10 或 11 和 .NET Framework 4.8 或更新版本。解压后，双击「演示模式.cmd」可用模拟变量体验界面。打开 `SwitchEnv.exe` 会请求当前账号的管理员权限。
+
+从 SwitchEnv 升级时，退出旧版，然后覆盖原目录中的程序文件并保留 `data`。新版沿用 `SwitchEnv.exe` 和原有登录任务，可继续使用已有数据和开机自启设置。
 
 登录自启以管理员权限运行。启用前，请把程序放在仅受信任的管理员可修改的目录。设置步骤见[使用说明](使用说明.md)。
 

@@ -1,6 +1,6 @@
-# SwitchEnv 开发指南
+# SwitchEnvVar 开发指南
 
-SwitchEnv 是一个原生 Windows 环境变量管理器，使用 C# 和 WPF，实现左侧配置组切换、右侧变量表格、单个/批量变量移动和独立的 PATH 列表编辑器。采用 MIT 许可证，运行时不依赖第三方包。
+SwitchEnvVar 是一个原生 Windows 环境变量管理器，使用 C# 和 WPF，实现左侧配置组切换、右侧变量表格、单个/批量变量移动和独立的 PATH 列表编辑器。采用 MIT 许可证，运行时不依赖第三方包。
 
 ## 构建
 
@@ -87,4 +87,4 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 
 0.2.2 支持变量描述。本机描述按变量作用范围和名称存储在状态文件中，配置组描述存储在各组变量定义中。两个描述字段都是可选的，旧版数据可直接读取。移动、删除和撤销操作会在同一事务中保存相关描述。环境快照和已应用的组定义只记录实际的环境操作。
 
-这是 0.2.2 便携版本，未配置发布签名、安装器或自动更新。界面参考 [SwitchHosts](https://github.com/oldj/SwitchHosts) 的配置组组织方式，代码独立实现。
+这是 0.2.3 便携版本，未配置发布签名、安装器或自动更新。界面参考 [SwitchHosts](https://github.com/oldj/SwitchHosts) 的配置组组织方式，代码独立实现。

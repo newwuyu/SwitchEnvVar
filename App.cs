@@ -53,8 +53,8 @@ namespace SwitchEnv
                     if (!ownsMutex)
                     {
                         if (startup || InstanceActivation.TryShow(instanceName)) return 0;
-                        const string message = "SwitchEnv 已在运行，但主窗口未响应打开请求。请查看任务栏右下角的隐藏图标。如果仍打不开，请在任务管理器结束 SwitchEnv.exe，再重新打开。";
-                        if (errorPath == null) MessageBox.Show(message, "SwitchEnv");
+                        const string message = "SwitchEnvVar 已在运行，但主窗口未响应打开请求。请查看任务栏右下角的隐藏图标。如果仍打不开，请在任务管理器结束 SwitchEnv.exe，再重新打开。";
+                        if (errorPath == null) MessageBox.Show(message, "SwitchEnvVar");
                         else File.WriteAllText(errorPath, message);
                         return 1;
                     }
@@ -102,7 +102,7 @@ namespace SwitchEnv
             }
             catch (Exception ex)
             {
-                if (errorPath != null) File.WriteAllText(errorPath, ex.ToString()); else MessageBox.Show(ex.Message, "SwitchEnv 启动失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (errorPath != null) File.WriteAllText(errorPath, ex.ToString()); else MessageBox.Show(ex.Message, "SwitchEnvVar 启动失败", MessageBoxButton.OK, MessageBoxImage.Error);
                 return 2;
             }
             finally
@@ -274,7 +274,7 @@ namespace SwitchEnv
             var toggle = VisualChild<ToggleButton>(item); Require(toggle != null, "Group toggle not rendered");
             bool accepted = false; var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(20) };
             int ticks = 0;
-            timer.Tick += delegate { var preview = Application.Current.Windows.Cast<Window>().FirstOrDefault(w => w.Title == "应用预览 — SwitchEnv" && w.IsVisible); if (preview != null) { accepted = true; timer.Stop(); preview.DialogResult = true; } else if (++ticks >= 250) { timer.Stop(); foreach (var dialog in Application.Current.Windows.Cast<Window>().Where(w => w.Owner == c.Window).ToList()) dialog.Close(); } };
+            timer.Tick += delegate { var preview = Application.Current.Windows.Cast<Window>().FirstOrDefault(w => w.Title == "应用预览 — SwitchEnvVar" && w.IsVisible); if (preview != null) { accepted = true; timer.Stop(); preview.DialogResult = true; } else if (++ticks >= 250) { timer.Stop(); foreach (var dialog in Application.Current.Windows.Cast<Window>().Where(w => w.Owner == c.Window).ToList()) dialog.Close(); } };
             timer.Start(); try { toggle.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)); } finally { timer.Stop(); }
             Require(accepted, "Toggle did not show a transaction preview");
         }

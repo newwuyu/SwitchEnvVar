@@ -1,4 +1,4 @@
-param([string]$Executable = (Join-Path $PSScriptRoot 'build\SwitchEnv.exe'))
+﻿param([string]$Executable = (Join-Path $PSScriptRoot 'build\SwitchEnv.exe'))
 $ErrorActionPreference = 'Stop'
 $reopenExe = (Resolve-Path -LiteralPath $Executable).ProviderPath
 $reopenData = Join-Path ([System.IO.Path]::GetTempPath()) ('SwitchEnv reopen test ' + [Guid]::NewGuid().ToString('N'))
@@ -6,6 +6,7 @@ $reopenState = Join-Path $reopenData 'state.json'
 $reopenError = Join-Path $reopenData 'reopen-error.txt'
 $reopenArgs = @('--demo', '--data-dir', ('"' + $reopenData + '"'), '--error-log', ('"' + $reopenError + '"'))
 $reopenProcesses = [System.Collections.Generic.List[System.Diagnostics.Process]]::new()
+$reopenTitle = 'SwitchEnvVar · Windows 环境变量管理与切换'
 
 function Start-DemoInstance([switch]$Startup) {
     $reopenLaunchArgs = $reopenArgs
@@ -29,9 +30,9 @@ function Assert-ManualReopen {
     Wait-Until {
         $reopenPrimary.Refresh()
         $reopenLauncher.Refresh()
-        $reopenPrimary.MainWindowTitle -like 'SwitchEnv *' -or $reopenLauncher.MainWindowTitle -eq 'SwitchEnv' -or ($reopenLauncher.HasExited -and $reopenLauncher.ExitCode -ne 0)
+        $reopenPrimary.MainWindowTitle -eq $reopenTitle -or $reopenLauncher.MainWindowTitle -eq 'SwitchEnvVar' -or ($reopenLauncher.HasExited -and $reopenLauncher.ExitCode -ne 0)
     } 'Manual relaunch did not display a window.'
-    if ($reopenPrimary.MainWindowTitle -notlike 'SwitchEnv *') {
+    if ($reopenPrimary.MainWindowTitle -ne $reopenTitle) {
         throw 'Manual relaunch did not display the original instance. The second launch only showed a prompt or failed.'
     }
     if (!$reopenLauncher.WaitForExit(6000) -or $reopenLauncher.ExitCode -ne 0) { throw 'Manual relaunch did not exit successfully.' }
