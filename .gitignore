@@ -1,0 +1,24 @@
+# Local SwitchEnv state and configuration exports
+data/
+demo-data/
+backups/
+state.json*
+pending.json*
+switchenv-profiles*.json
+*.log
+
+# Compiler output and release archives
+build/
+dist/
+test-results/
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+*.zip
+
+# Local editor settings
+.vs/
+.idea/
+*.user
